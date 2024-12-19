@@ -71,7 +71,7 @@ Make sure MongoDB is running on your system or remotely. Update the `DATABASES` 
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'bookreviewdb',  # Replace with your MongoDB database name
+        'NAME': 'bookreviewdb', 
     }
 }
 ```
