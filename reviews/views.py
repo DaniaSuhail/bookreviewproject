@@ -274,26 +274,6 @@ def your_reviews(request):
     }
     return render(request, 'reviews/your_reviews.html', context)
 
-def update_reading_goal(request):
-    if not request.user.is_authenticated:
-        return redirect('accounts:login')
-
-    user_profile = UserProfile.objects.get(user=request.user)
-
-    if request.method == 'POST':
-        form = ReadingGoalForm(request.POST, instance=user_profile)
-        if form.is_valid():
-            form.save()
-            return redirect('reviews:stats')
-    else:
-        form = ReadingGoalForm(instance=user_profile)
-
-    return render(request, 'reviews/update_goal.html', {'form': form})
-
-
-from django.shortcuts import get_object_or_404, redirect
-from .models import Shelf, Book
-
 from django.shortcuts import get_object_or_404, redirect
 from .models import Shelf, Book
 
@@ -444,7 +424,7 @@ def add_book(request):
             book = form.save(commit=False)
             book.genre = form.cleaned_data['genre']  # Save genres as a list
             book.save()
-            return redirect('reviews:explore')  # Redirect to explore page
+            return redirect('reviews:explore')  
     else:
         form = AddBookForm()
     return render(request, 'reviews/add_book.html', {'form': form})

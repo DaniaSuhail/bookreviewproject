@@ -95,7 +95,7 @@ class UpdateProfileForm(forms.ModelForm):
 class AddBookForm(forms.ModelForm):
     genre = forms.MultipleChoiceField(
         choices=GENRE_CHOICES,  # Use predefined choices
-        widget=forms.CheckboxSelectMultiple(attrs={"class": "form-check-input"}),  # Render as checkboxes
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "form-check-input"}),  #checkboxes
     )
 
     class Meta:

@@ -82,24 +82,6 @@ class UserProfile(models.Model):
         return f"{self.user.username}'s Profile"
 
 
-from django.db import models
-from django.contrib.auth.models import User
-
-# Model to represent a book review
-class BookReview(models.Model):
-    book_title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    review_text = models.TextField()
-    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])  # Ratings from 1 to 5
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # User who posted the review
-    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set the date when the review is created
-
-    def __str__(self):
-        return f"Review of {self.book_title} by {self.user.username}"
-
-    class Meta:
-        ordering = ['-created_at'] 
-
 def home(request):
     book_list = Book.objects.all()
     paginator = Paginator(book_list, 4)  # Show 4 books per page

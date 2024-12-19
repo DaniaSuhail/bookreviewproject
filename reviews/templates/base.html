@@ -134,7 +134,7 @@
                         </ul>
                     </li>
                     {% if user.is_authenticated %}
-                        {% if user.userprofile %}
+                     {% if user.userprofile %}
                             <li class="nav-item">
                                 <a class="nav-link transition-all" href="{% url 'reviews:profile' %}">Profile</a>
                             </li>
