@@ -26,42 +26,98 @@ This is a web application built with **Django** and **MongoDB**, styled with **B
 ---
 
 ## **Setup Instructions**
-1. Create a Virtual Enviroment
-   -python -m venv venv
 
-2. Activate the Virtual Enviroment
-   -venv\Scripts\activate
+### **1. Clone the Repository**
+Clone the project from GitHub and navigate into the project directory:
+```bash
+git clone https://github.com/DaniaSuhail/bookreviewproject.git
+cd bookreviewproject
+```
 
-3. Install Dependencies
-   -pip install -r requirements.txt
+---
 
-4. Configure MongoDB
--Open bookreview/settings.py and update the DATABASES configuration:
--DATABASES = {
+### **2. Create a Virtual Environment**
+Create a virtual environment to isolate project dependencies:
+```bash
+python -m venv venv
+```
+
+---
+
+### **3. Activate the Virtual Environment**
+Activate the virtual environment:
+- **On Windows**:
+  ```bash
+  venv\Scripts\activate
+  ```
+- **On Linux/Mac**:
+  ```bash
+  source venv/bin/activate
+  ```
+
+---
+
+### **4. Install Dependencies**
+Install all the required libraries specified in `requirements.txt`:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### **5. Configure MongoDB**
+Make sure MongoDB is running on your system or remotely. Update the `DATABASES` section in `bookreview/settings.py` to point to your MongoDB database:
+```python
+DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'bookreviewdb',  # Replace with your MongoDB database name
     }
 }
+```
 
-5. Apply Migrations
-   -python manage.py migrate
+---
 
-6.Create a Superuser
-  -To access the Django Admin Panel, create a superuser account:
-  -python manage.py createsuperuser
+### **6. Apply Migrations**
+Run the following command to create the necessary database schema:
+```bash
+python manage.py migrate
+```
 
- 7.Run the Development Server
-   -python manage.py runserver
+---
 
- 8.Open the Application
-   -Open your browser and navigate to:
-   -http://127.0.0.1:8000/
+### **7. Create a Superuser**
+To access the Django Admin Panel, create a superuser:
+```bash
+python manage.py createsuperuser
+```
+Follow the prompts to set up your username, email, and password.
 
-9. Access Django Admin (Optional)
-    -You can access the admin site at:
-    -http://127.0.0.1:8000/admin/
-   -Log in with user created in step 6
+---
+
+### **8. Run the Development Server**
+Start the development server to test the application locally:
+```bash
+python manage.py runserver
+```
+
+---
+
+### **9. Open the Application**
+Open your browser and navigate to:
+- **Main Application**:  
+  [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
+---
+
+### **10. Access Django Admin (Optional)**
+If needed, access the Django Admin Panel at:
+- **Admin Panel**:  
+  [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+
+Log in using the superuser credentials created in **Step 7**.
+
+---
 
 
 ### **1. Clone the Repository**
