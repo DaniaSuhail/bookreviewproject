@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ user.username }}'s Profile</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="bio">Bio</label>
+            <textarea name="bio" id="bio" class="form-control">{{ user_profile.bio }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="reading_goal">Reading Goal</label>
+            <input type="number" name="reading_goal" id="reading_goal" class="form-control" value="{{ user_profile.reading_goal }}">
+        </div>
+        <div class="mb-3">
+            <label for="profile_picture">Profile Picture</label>
+            <input type="file" name="profile_picture" id="profile_picture" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+{% endblock %}

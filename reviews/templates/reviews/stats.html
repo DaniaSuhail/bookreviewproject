@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center display-5 text-primary">📊 Your Reading Stats</h2>
+    <p class="text-center text-muted mb-4">Track your progress and reading habits.</p>
+
+    <div class="row">
+        <!-- Reading Goal Section -->
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <h3 class="text-success"><i class="fas fa-bullseye"></i> Reading Goal</h3>
+                <p>Your 2024 reading goal: {{ reading_goal }} books</p>
+                <p>{{ total_finished }} books finished out of {{ reading_goal }} planned for 2024!</p>
+                <div class="progress" style="height: 25px;">
+                    <div 
+                        class="progress-bar bg-success" 
+                        role="progressbar" 
+                        style="width: {{ progress_percentage }}%;" 
+                        aria-valuenow="{{ progress_percentage }}" 
+                        aria-valuemin="0" 
+                        aria-valuemax="100">
+                        {{ progress_percentage|floatformat:1 }}%
+                    </div>
+                </div>
+                <!-- Add a space for the bar chart -->
+                <div class="mt-4">
+                    <h4 class="text-warning"><i class="fas fa-user"></i> Most Read Authors</h4>
+                    <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+                        <canvas id="authorChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Most Read Genres Section -->
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <h3 class="text-info"><i class="fas fa-book"></i> Most Read Genres</h3>
+                <canvas id="genreChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Genre Chart Data
+    const genreData = {{ genre_data|safe }};
+    const genreLabels = genreData.map(item => item.genre);
+    const genreCounts = genreData.map(item => item.count);
+
+    // Author Chart Data
+    const authorsData = {{ authors_data|safe }};
+    const authorLabels = authorsData.map(item => item.author);
+    const authorCounts = authorsData.map(item => item.count);
+
+    // Render Genre Pie Chart
+    const genreCtx = document.getElementById('genreChart').getContext('2d');
+    new Chart(genreCtx, {
+        type: 'pie',
+        data: {
+            labels: genreLabels,
+            datasets: [{
+                data: genreCounts,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+            },
+        },
+    });
+
+    // Render Author Bar Chart
+    const authorCtx = document.getElementById('authorChart').getContext('2d');
+    new Chart(authorCtx, {
+        type: 'bar',
+        data: {
+            labels: authorLabels,
+            datasets: [{
+                label: 'Books Read',
+                data: authorCounts,
+                backgroundColor: '#36A2EB',
+                borderColor: '#007bff',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+</script>
+{% endblock %}

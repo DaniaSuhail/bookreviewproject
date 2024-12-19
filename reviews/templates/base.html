@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BookReview{% endblock %}</title>
+
+    <!-- Bootswatch Minty Theme -->
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/minty/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        /* Navbar Customization */
+        .navbar-minty {
+            background-color: #78c2ad !important;
+            color: white;
+            border-bottom: 2px solid #66b29c;
+            transition: background-color 0.3s ease;
+        }
+        .navbar-minty .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .navbar-minty .nav-link:hover {
+            color: #f8f9fa !important;
+            transform: scale(1.1);
+        }
+        .navbar-minty .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .navbar-minty .navbar-brand:hover {
+            color: #f1f1f1;
+            transform: scale(1.1);
+        }
+        .navbar-toggler {
+            border: none;
+        }
+        .dropdown-menu {
+            border: none !important;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #5f6b68;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+        footer a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            color: #f1f1f1;
+            text-decoration: underline;
+        }
+
+        /* General Container Styling */
+        .container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        /* Buttons Styling */
+        .btn-minty {
+            background-color: #66b29c;
+            border-color: #66b29c;
+            color: white;
+        }
+        .btn-minty:hover {
+            background-color: #579d88;
+            border-color: #579d88;
+        }
+
+        /* Fade-in Animation for Alerts */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-minty">
+        <div class="container-fluid">
+            <!-- Branding -->
+            <a class="navbar-brand transition-all" href="/">BookReview</a>
+
+            <!-- Toggler for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link transition-all" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link transition-all" href="{% url 'reviews:explore' %}">Explore</a>
+                    </li>
+                    <!-- My Book Hub Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle transition-all" href="#" id="myBookHubDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            My Book Hub
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="myBookHubDropdown">
+                            <li><a class="dropdown-item" href="{% url 'reviews:your_reviews' %}">Reviews</a></li>
+                            <li><a class="dropdown-item" href="{% url 'reviews:stats' %}">Stats</a></li>
+                            <li><a class="dropdown-item" href="{% url 'reviews:your_shelves' %}">Shelves</a></li>
+                        </ul>
+                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user.userprofile %}
+                            <li class="nav-item">
+                                <a class="nav-link transition-all" href="{% url 'reviews:profile' %}">Profile</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link transition-all" href="{% url 'reviews:create_profile' %}">Create Profile</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+                
+                <!-- User Profile Dropdown -->
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {% if user.userprofile.profile_picture %}
+                                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/30" alt="No Profile" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                {% endif %}
+                                {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Section -->
+    <div class="container fade-in">
+        {% block content %}
+        <h2>Welcome to BookReview!</h2>
+        <p>Discover and share reviews of your favorite books in a vibrant community of readers.</p>
+        <a href="{% url 'reviews:explore' %}" class="btn btn-minty">Start Exploring</a>
+
+        <!-- Alert Messages -->
+        {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        <script>
+            // Automatically close alerts after 5 seconds
+            setTimeout(function () {
+                let alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function (alert) {
+                    alert.classList.remove('show');
+                    alert.classList.add('fade');
+                    setTimeout(function () {
+                        alert.remove();
+                    }, 300); // Matches Bootstrap fade-out animation timing
+                });
+            }, 5000); // 5000ms = 5 seconds
+        </script>
+        {% endif %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-4">
+        <p>&copy; 2024 BookReview | All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

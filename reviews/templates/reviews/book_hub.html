@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Side Navigation -->
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{% url 'reviews:book_hub' %}" class="list-group-item list-group-item-action active">
+                    Your Shelves
+                </a>
+                <a href="{% url 'reviews:stats' %}" class="list-group-item list-group-item-action">Stats</a>
+                <a href="{% url 'reviews:your_reviews' %}" class="list-group-item list-group-item-action">Your Reviews</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <h1>Your Shelves</h1>
+
+            <h3>Currently Reading</h3>
+            <div class="row">
+                {% for review in currently_reading %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        {% if review.book.image %}
+                        <img src="{{ review.book.image.url }}" class="card-img-top" alt="{{ review.book.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.book.title }}</h5>
+                            <p class="card-text">{{ review.book.author }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No books in this category.</p>
+                {% endfor %}
+            </div>
+
+            <h3>Want to Read</h3>
+            <div class="row">
+                {% for review in want_to_read %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        {% if review.book.image %}
+                        <img src="{{ review.book.image.url }}" class="card-img-top" alt="{{ review.book.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.book.title }}</h5>
+                            <p class="card-text">{{ review.book.author }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No books in this category.</p>
+                {% endfor %}
+            </div>
+
+            <h3>Finished Reading</h3>
+            <div class="row">
+                {% for review in finished_reading %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        {% if review.book.image %}
+                        <img src="{{ review.book.image.url }}" class="card-img-top" alt="{{ review.book.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.book.title }}</h5>
+                            <p class="card-text">{{ review.book.author }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No books in this category.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

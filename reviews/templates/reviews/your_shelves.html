@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center display-5 text-primary">📚 Your Shelves</h2>
+    <p class="text-center text-muted mb-4">Track your reading journey and manage your shelves effortlessly.</p>
+
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs justify-content-center" id="shelfTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button 
+                class="nav-link active fw-bold" 
+                id="currently-reading-tab" 
+                data-bs-toggle="tab" 
+                data-bs-target="#currently-reading" 
+                type="button" 
+                role="tab" 
+                aria-controls="currently-reading" 
+                aria-selected="true">
+                📖 Currently Reading
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button 
+                class="nav-link fw-bold" 
+                id="want-to-read-tab" 
+                data-bs-toggle="tab" 
+                data-bs-target="#want-to-read" 
+                type="button" 
+                role="tab" 
+                aria-controls="want-to-read" 
+                aria-selected="false">
+                ⭐ Want to Read
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button 
+                class="nav-link fw-bold" 
+                id="finished-reading-tab" 
+                data-bs-toggle="tab" 
+                data-bs-target="#finished-reading" 
+                type="button" 
+                role="tab" 
+                aria-controls="finished-reading" 
+                aria-selected="false">
+                🏁 Finished Reading
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content mt-4" id="shelfTabsContent">
+        <!-- Currently Reading -->
+        <div class="tab-pane fade show active" id="currently-reading" role="tabpanel" aria-labelledby="currently-reading-tab">
+            <div class="row g-4">
+                {% if currently_reading %}
+                    {% for entry in currently_reading %}
+                    <div class="col-lg-2 col-md-3 col-sm-6 d-flex align-items-stretch">
+                        <div class="card shadow-sm h-100">
+                            {% if entry.book.image %}
+                            <img src="{{ entry.book.image.url }}" class="card-img-top" alt="{{ entry.book.title }}" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-truncate">{{ entry.book.title }}</h5>
+                                <p class="card-text text-muted">by {{ entry.book.author }}</p>
+                                <form method="POST" action="{% url 'reviews:add_to_shelf' entry.book.id %}" class="mt-auto">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="shelf" value="Finished">
+                                    <button type="submit" class="btn btn-success btn-sm">Mark as Finished</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center text-muted">No books currently being read. Start your journey!</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Want to Read -->
+        <div class="tab-pane fade" id="want-to-read" role="tabpanel" aria-labelledby="want-to-read-tab">
+            <div class="row g-4">
+                {% if want_to_read %}
+                    {% for entry in want_to_read %}
+                    <div class="col-lg-2 col-md-3 col-sm-6 d-flex align-items-stretch">
+                        <div class="card shadow-sm h-100">
+                            {% if entry.book.image %}
+                            <img src="{{ entry.book.image.url }}" class="card-img-top" alt="{{ entry.book.title }}" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-truncate">{{ entry.book.title }}</h5>
+                                <p class="card-text text-muted">by {{ entry.book.author }}</p>
+                                <form method="POST" action="{% url 'reviews:add_to_shelf' entry.book.id %}" class="mt-auto">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="shelf" value="Currently Reading">
+                                    <button type="submit" class="btn btn-primary btn-sm">Start Reading</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center text-muted">No books in your "Want to Read" list. Add some!</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Finished Reading -->
+        <div class="tab-pane fade" id="finished-reading" role="tabpanel" aria-labelledby="finished-reading-tab">
+            <div class="row g-4">
+                {% if finished_reading %}
+                    {% for entry in finished_reading %}
+                    <div class="col-lg-2 col-md-3 col-sm-6 d-flex align-items-stretch">
+                        <div class="card shadow-sm h-100">
+                            {% if entry.book.image %}
+                            <img src="{{ entry.book.image.url }}" class="card-img-top" alt="{{ entry.book.title }}" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-truncate">{{ entry.book.title }}</h5>
+                                <p class="card-text text-muted">by {{ entry.book.author }}</p>
+                                <div class="mt-auto">
+                                    <a href="{% url 'reviews:book_detail' entry.book.id %}" class="btn btn-secondary btn-sm w-100">Write a Review</a>
+                                </div>        
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center text-muted">No books finished yet. Keep reading!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

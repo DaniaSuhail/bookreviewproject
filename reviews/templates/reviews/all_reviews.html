@@ -1,0 +1,19 @@
+<!-- templates/reviews/all_reviews.html -->
+{% extends 'base.html' %}
+
+{% block title %}All Reviews{% endblock %}
+
+{% block content %}
+  <h1>All Reviews</h1>
+  <ul>
+    {% for review in reviews %}
+      <li>
+        <strong>{{ review.book_title }} by {{ review.author }}</strong><br>
+        Rating: {{ review.rating }}<br>
+        Reviewed by: {{ review.user.username }} on {{ review.created_at }}<br>
+        <p>{{ review.review_text }}</p>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'add_review' %}">Add a new review</a>
+{% endblock %}

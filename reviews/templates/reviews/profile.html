@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Profile Header */
+    .profile-header {
+        background: #5bc0de;
+        color: white;
+        padding: 3rem 1rem;
+        border-radius: 10px;
+        text-align: center;
+        position: relative;
+        margin-bottom: 2rem;
+    }
+
+    .profile-header h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color:white;
+    }
+    /* Bio Section */
+    .bio-section {
+        text-align: center;
+        margin-top: 5rem; /* Adjust for overlap of profile picture */
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .bio-section p {
+        margin: 0;
+        font-style: italic;
+    }
+
+    .profile-header p {
+        font-size: 1rem;
+        margin-bottom: 0;
+        color: #e3f2fd;
+    }
+
+    .profile-picture-container {
+        position: absolute;
+        bottom: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        padding: 5px;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-picture-container img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 3rem;
+    }
+
+    .stats-card {
+        background: white;
+        padding: 1.5rem;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .stats-card h5 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #5bc0de;
+        margin-bottom: 0.5rem;
+    }
+
+    .stats-card p {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #6c757d;
+        margin: 0;
+    }
+
+    /* Edit Profile Button */
+    .edit-profile-btn {
+        margin-top: 2rem;
+        background-color: #5bc0de;
+        color: white;
+        font-size: 1rem;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .edit-profile-btn:hover {
+        background-color: #39a9cb;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .stats-section {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+</style>
+
+<div class="container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <h1>Hello, {{ profile.user.username|title }}!</h1>
+        <p>Welcome</p>
+        <div class="profile-picture-container">
+            {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+            <img src="https://via.placeholder.com/120" alt="No Profile Picture">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Bio Section -->
+    <div class="bio-section">
+        <p>{{ profile.bio|default:"You haven't added a bio yet." }}</p>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <!-- Reading Goal -->
+        <div class="stats-card">
+            <h5>Reading Goal</h5>
+            <p>{{ profile.reading_goal|default:"Not Set" }}</p>
+        </div>
+
+        <!-- Books Read -->
+        <div class="stats-card">
+            <h5>Books Read</h5>
+            <p>{{ books_read_count }}</p>
+        </div>
+
+        <!-- Reviews Written -->
+        <div class="stats-card">
+            <h5>Reviews Written</h5>
+            <p>{{ review_count }}</p>
+        </div>
+    </div>
+
+    <!-- Edit Profile Button -->
+    <div class="text-center">
+        <a href="{% url 'reviews:update_profile' %}" class="btn edit-profile-btn">Edit Profile</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Your Review</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="content" class="form-label">Review Content</label>
+            <textarea class="form-control" id="content" name="content" rows="3">{{ review.content }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating</label>
+            <select class="form-select" id="rating" name="rating">
+                <option value="1" {% if review.rating == 1 %}selected{% endif %}>1 - Poor</option>
+                <option value="2" {% if review.rating == 2 %}selected{% endif %}>2 - Fair</option>
+                <option value="3" {% if review.rating == 3 %}selected{% endif %}>3 - Good</option>
+                <option value="4" {% if review.rating == 4 %}selected{% endif %}>4 - Very Good</option>
+                <option value="5" {% if review.rating == 5 %}selected{% endif %}>5 - Excellent</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

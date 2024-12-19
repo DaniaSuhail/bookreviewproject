@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">📚 Explore Hub</h1>
+    <p class="text-center text-muted">Explore our vast collection of books and find your next read!</p>
+
+    <!-- Search and Filter Section -->
+    <form method="GET" class="row align-items-center mb-4 g-3">
+        <!-- Search Input -->
+        <div class="col-md-6">
+            <input 
+                type="text" 
+                name="search" 
+                class="form-control shadow-sm" 
+                placeholder="🔍 Search by title or author..." 
+                value="{{ request.GET.search }}">
+        </div>
+
+        <!-- Genre Filter -->
+        <div class="col-md-4">
+            <select name="genre" class="form-select shadow-sm">
+                <option value="">Filter by genre</option>
+                <option value="Adventure" {% if request.GET.genre == "Adventure" %}selected{% endif %}>Adventure</option>
+                <option value="Fantasy" {% if request.GET.genre == "Fantasy" %}selected{% endif %}>Fantasy</option>
+                <option value="Mystery" {% if request.GET.genre == "Mystery" %}selected{% endif %}>Mystery</option>
+                <option value="Children" {% if request.GET.genre == "Children" %}selected{% endif %}>Children</option>
+            </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-warning w-100 shadow-sm">Search</button>
+            <a href="{% url 'reviews:explore' %}" class="btn btn-secondary w-100 shadow-sm">Reset</a>
+        </div>
+    </form>
+
+    <!-- Book List Section -->
+    <div class="row g-4">
+        {% for book in books %}
+        <div class="col-lg-2 col-md-3 col-sm-6 d-flex align-items-stretch">
+            <div class="card shadow-sm border-0">
+                {% if book.image %}
+                <img 
+                    src="{{ book.image.url }}" 
+                    class="card-img-top" 
+                    alt="{{ book.title }}" 
+                    style="height: 250px; object-fit: cover; border-radius: 5px 5px 0 0;">
+                {% else %}
+                <img 
+                    src="https://via.placeholder.com/150" 
+                    class="card-img-top" 
+                    alt="No Image Available" 
+                    style="height: 250px; object-fit: cover; border-radius: 5px 5px 0 0;">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-center text-primary">{{ book.title }}</h5>
+                    <p class="card-text text-center text-muted"><strong>by {{ book.author }}</strong></p>
+                    <a href="{% url 'reviews:book_detail' pk=book.id %}" class="btn btn-outline-primary mt-auto shadow-sm">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center">
+            <p class="text-muted">No books found. Would you like to add one?</p>
+            <a href="{% url 'reviews:add_book' %}" class="btn btn-success shadow-sm">Add a Book</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

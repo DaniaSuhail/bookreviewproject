@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Search for Books</h2>
+  <form method="get" action="{% url 'book_search' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  {% if books %}
+    <h3>Search Results</h3>
+    <ul>
+      {% for book in books %}
+        <li>{{ book.title }} by {{ book.author }}</li>
+      {% endfor %}
+    </ul>
+  {% elif form.is_bound %}
+    <p>No results found for "{{ form.cleaned_data.query }}".</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Custom Form Styling */
+    .form-container {
+        background-color: #f8f9fa; /* Light gray background */
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+    .form-title {
+        font-weight: bold;
+        color: #78c2ad; /* Minty primary green */
+    }
+    .form-subtitle {
+        color: #6c757d; /* Muted gray */
+    }
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+    }
+    .btn-minty {
+        background-color: #78c2ad; /* Minty primary green */
+        color: white;
+        border: none;
+    }
+    .btn-minty:hover {
+        background-color: #66b29c;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="form-container">
+                <!-- Title and Subtitle -->
+                <h2 class="text-center form-title">Create Your Profile</h2>
+                <p class="text-center form-subtitle">Add your personal details to get started.</p>
+
+                <!-- Form -->
+                <form method="post" enctype="multipart/form-data" class="mt-4">
+                    {% csrf_token %}
+                    <div class="row">
+                        <!-- Dynamically Rendered Form Fields -->
+                        {% for field in form %}
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-minty w-100 mt-3">Save Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

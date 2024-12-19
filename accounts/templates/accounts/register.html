@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .form-container {
+        background-color: #ffffff; /* Pure white for a clean look */
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Modern shadow */
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .form-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-title {
+        font-weight: 600;
+        color: #5bc0de; /* Bootswatch Minty Info Blue */
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #5bc0de; /* Minty Info Blue */
+        box-shadow: 0 0 8px rgba(91, 192, 222, 0.25);
+    }
+
+    .btn-primary {
+        background-color: #5bc0de; /* Bootswatch Minty Info Blue */
+        border: none;
+        font-weight: 600;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #31b0d5; /* Slightly darker Info Blue for hover */
+        transform: scale(1.05);
+    }
+
+    .form-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-footer a {
+        color: #5bc0de; /* Info Blue Link Color */
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .form-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container d-flex justify-content-center">
+    <div class="col-md-6">
+        <div class="form-container">
+            <!-- Title -->
+            <h2 class="form-title">
+                <i class="fas fa-user-plus"></i> Register
+            </h2>
+
+            <!-- Form -->
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100 mt-3">
+                    <i class="fas fa-check-circle"></i> Register
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="form-footer">
+                Already have an account? <a href="{% url 'accounts:login' %}">Log in here</a>.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add FontAwesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}
