@@ -120,7 +120,3 @@ Log in using the superuser credentials created in **Step 7**.
 ---
 
 
-### **1. Clone the Repository**
-```bash
-git clone https://github.com/DaniaSuhail/bookreviewproject.git
-cd bookreviewproject
